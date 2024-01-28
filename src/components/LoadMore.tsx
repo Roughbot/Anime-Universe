@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import AnimeCard, { AnimeProp } from "./AnimeCard";
 
-let page = 2;
+let page = 1;
 
 function LoadMore() {
   const { ref, inView } = useInView();
