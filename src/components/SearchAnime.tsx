@@ -1,21 +1,37 @@
 "use client";
 import { searchAnimeData } from "@/app/searchAction";
 import Image from "next/image";
-import { useState } from "react";
+import { useInView } from "react-intersection-observer";
+import { useEffect, useState } from "react";
 import AnimeCard, { AnimeProp } from "./AnimeCard";
+
+let page = 2;
 
 const SearchAnime = () => {
   const [searchData, setSearchData] = useState("");
-  const [searchedAnime, setSearchedAnime] = useState([]);
+  const [searchedAnime, setSearchedAnime] = useState<AnimeProp[]>([]);
   const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const searchAnime = async () => {
     setLoading(true);
-    const response = await searchAnimeData(searchData);
+    const response = await searchAnimeData(searchData, 1);
     setSearchedAnime(response);
     setLoading(false);
     setSearchData("");
+    setHasSearched(true);
   };
+
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      searchAnimeData(searchData, page).then((res) => {
+        setSearchedAnime([...searchedAnime, ...res]);
+      });
+      page++;
+    }
+  }, [inView, hasSearched]);
 
   return (
     <>
@@ -56,9 +72,27 @@ const SearchAnime = () => {
       )}
       <section className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10">
         {searchedAnime.map((item: AnimeProp, index: number) => {
-          return <AnimeCard key={item.id} anime={item} index={index} />;
+          return (
+            <>
+              <AnimeCard key={item.id} anime={item} index={index} />
+            </>
+          );
         })}
       </section>
+      {hasSearched && (
+        <section className="flex justify-center items-center w-full">
+          <div>
+            <Image
+              ref={ref}
+              src="./spinner.svg"
+              alt="spinner"
+              width={56}
+              height={56}
+              className="object-contain"
+            />
+          </div>
+        </section>
+      )}
     </>
   );
 };

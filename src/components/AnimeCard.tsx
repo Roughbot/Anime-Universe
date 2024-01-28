@@ -43,6 +43,7 @@ function AnimeCard({ anime, index }: Prop) {
           alt={anime.name}
           fill
           className="rounded-xl"
+          sizes="100%"
         />
       </div>
       <div className="py-4 flex flex-col gap-3">
