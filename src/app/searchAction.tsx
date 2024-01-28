@@ -1,5 +1,7 @@
 "use server";
 
+import AnimeCard, { AnimeProp } from "@/components/AnimeCard";
+
 export const searchAnimeData = async (search: string, page: number) => {
   try {
     const response = await fetch(
@@ -8,7 +10,13 @@ export const searchAnimeData = async (search: string, page: number) => {
 
     const data = await response.json();
 
-    return data;
+    return data.map((item: AnimeProp, index: number) => {
+      return (
+        <>
+          <AnimeCard key={item.id} anime={item} index={index} />
+        </>
+      );
+    });
   } catch (error) {
     console.log(error);
   }

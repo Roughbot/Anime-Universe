@@ -3,11 +3,13 @@ import { searchAnimeData } from "@/app/searchAction";
 import Image from "next/image";
 import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
-import AnimeCard, { AnimeProp } from "./AnimeCard";
+import AnimeCard from "./AnimeCard";
+
+export type AnimeCard = JSX.Element;
 
 const SearchAnime = () => {
   const [searchData, setSearchData] = useState("");
-  const [searchedAnime, setSearchedAnime] = useState<AnimeProp[]>([]);
+  const [searchedAnime, setSearchedAnime] = useState<AnimeCard[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [page, setPage] = useState(2);
@@ -74,13 +76,7 @@ const SearchAnime = () => {
             <h2 className="text-3xl text-white font-bold">Result</h2>
           </section>
           <section className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10">
-            {searchedAnime.map((item: AnimeProp, index: number) => {
-              return (
-                <>
-                  <AnimeCard key={item.id} anime={item} index={index} />
-                </>
-              );
-            })}
+            {searchedAnime}
           </section>
           {hasSearched && (
             <section className="flex justify-center items-center w-full">
