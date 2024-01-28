@@ -30,16 +30,11 @@ const SearchAnime = () => {
             ...prevSearchedAnime,
             ...res,
           ]);
+          setPage((prevPage) => prevPage + 1);
         })
         .catch((error) => console.error(error));
     }
   }, [inView, hasSearched]);
-
-  useEffect(() => {
-    if (hasSearched) {
-      setPage((prevPage) => prevPage + 1);
-    }
-  }, [searchedAnime]);
 
   return (
     <>
