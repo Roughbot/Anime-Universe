@@ -8,6 +8,5 @@ export const fetchAnime = async (page: number) => {
   );
 
   const data = await response.json();
-  console.log(data);
   return data;
 };
